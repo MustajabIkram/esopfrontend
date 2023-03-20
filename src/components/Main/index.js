@@ -11,11 +11,13 @@ export default function Main() {
   function handleTemplate(event) {
     if (!event.target.files) return;
     setFile(event.target.files[0]);
+    setUploaded(file && data);
   }
 
   function handleExcel(event) {
     if (!event.target.files) return;
     setData(event.target.files[0]);
+    setUploaded(file && data);
   }
 
   async function handleGenerate() {
@@ -74,7 +76,12 @@ export default function Main() {
           />
           <figcaption>Output Preview</figcaption>
         </figure>
-        <button type='button' onClick={handleGenerate} className='btn'>
+        <button
+          type='button'
+          onClick={handleGenerate}
+          className='btn'
+          disabled={uploaded}
+        >
           Generate
         </button>
         {/* 
