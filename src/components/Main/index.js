@@ -80,7 +80,7 @@ export default function Main() {
           type='button'
           onClick={handleGenerate}
           className='btn'
-          disabled={uploaded}
+          disabled={!uploaded}
         >
           Generate
         </button>
