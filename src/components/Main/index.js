@@ -74,8 +74,8 @@ export default function Main() {
           />
           <figcaption>Output Preview</figcaption>
         </figure>
-        <button type='button' onClick={handleGenerate}>
-          Generate Results
+        <button type='button' onClick={handleGenerate} className='btn'>
+          Generate
         </button>
         {/* 
         <button type='button' onClick={handleDownload}>
