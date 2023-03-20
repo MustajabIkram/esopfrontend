@@ -1,0 +1,69 @@
+main {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  background-color: white;
+  padding: 2rem 0;
+}
+
+main div {
+  flex-basis: 30%;
+  padding-bottom: 10px;
+  text-align: center;
+  border: 1px solid #ffce5e;
+  border-radius: 1.5rem;
+  margin: 1rem;
+  color: #633ea5;
+}
+
+main div h1 {
+  margin: 0;
+  background-color: #633ea5;
+  color: white;
+  border-radius: 1rem 1rem 0 0;
+}
+
+button {
+  background-color: #633ea5;
+  border: none;
+  border-radius: 2rem;
+  color: white;
+  padding: 0.75rem;
+  font-family: 'Raleway', sans-serif;
+  font-weight: bolder;
+  font-size: 1rem;
+  margin: 0.75rem;
+}
+
+main img {
+  margin-top: 1rem;
+  width: 70%;
+}
+
+figure {
+  border: #ccc 2px solid;
+}
+
+figcaption {
+  background-color: #ccc;
+  margin-top: auto;
+  width: 100%;
+}
+
+@media only screen and (max-width: 1200px) {
+  main div {
+    flex-basis: 50%;
+  }
+}
+
+@media only screen and (max-width: 900px) {
+  main div {
+    flex-basis: 65%;
+  }
+}
+
+@media only screen and (max-width: 700px) {
+  main div {
+    flex-basis: 100%;
+  }
+}
