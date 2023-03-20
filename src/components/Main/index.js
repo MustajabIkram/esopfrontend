@@ -9,35 +9,51 @@ export default function Main() {
   const [data, setData] = useState(null);
   const [uploaded, setUploaded] = useState(0);
   function handleTemplate(event) {
-    if (!event.target.files) return;
+    if (
+      !event.target.files &&
+      event.target.files[0].name.split('.').at(-1) !== 'docx'
+    ) {
+      setFile(null);
+      return;
+    }
     setFile(event.target.files[0]);
-    setUploaded(file && data);
+    if (file && data) setUploaded(1);
   }
 
   function handleExcel(event) {
-    if (!event.target.files) return;
+    if (
+      !event.target.files &&
+      event.target.files[0].name.split('.').at(-1) !== 'xlsx'
+    ) {
+      setData(null);
+      return;
+    }
     setData(event.target.files[0]);
     setUploaded(file && data);
+    if (file && data) setUploaded(1);
   }
 
   async function handleGenerate() {
-    setUploaded(1);
-    const formData = new FormData();
-    formData.append('file', file);
-    formData.append('data', data);
-    await axios
-      .post('https://simple-backend-ffmw.vercel.app/api/upload', formData)
-      .then((res) => {
-        fetch('https://simple-backend-ffmw.vercel.app/api/download').then(
-          (response) => {
-            response.blob().then((blob) => {
-              download(blob);
-            });
-          }
-        );
-      });
+    if (
+      file.name.split('.').at(-1) === 'docx' &&
+      data.name.split('.').at(-1) === 'xlsx'
+    ) {
+      const formData = new FormData();
+      formData.append('file', file);
+      formData.append('data', data);
+      await axios
+        .post('https://simple-backend-ffmw.vercel.app/api/upload', formData)
+        .then((res) => {
+          fetch('https://simple-backend-ffmw.vercel.app/api/download').then(
+            (response) => {
+              response.blob().then((blob) => {
+                download(blob);
+              });
+            }
+          );
+        });
+    }
   }
-
   return (
     <main>
       <div className='template'>
@@ -51,6 +67,12 @@ export default function Main() {
           <figcaption>Your Template</figcaption>
         </figure>
         <input type='file' name='file' onChange={handleTemplate} />
+        <br />
+        {file && file?.name.split('.').at(-1) === 'docx' ? (
+          ''
+        ) : (
+          <h4>* docx ext only</h4>
+        )}
       </div>
       <div className='data'>
         <h1>Data</h1>
@@ -63,6 +85,12 @@ export default function Main() {
           <figcaption>Excel Example</figcaption>
         </figure>
         <input type='file' name='data' onChange={handleExcel} />
+        <br />
+        {data && data?.name.split('.').at(-1) === 'xlsx' ? (
+          ''
+        ) : (
+          <h4>* xlsx ext only</h4>
+        )}
       </div>
       <div className='output'>
         <h1>Output</h1>
@@ -80,10 +108,13 @@ export default function Main() {
           type='button'
           onClick={handleGenerate}
           className='btn'
-          disabled={!uploaded}
+          disabled={uploaded === 0}
         >
           Generate
         </button>
+        <br />
+        <br />
+        {uploaded === 0 ? <h4>* upload docs</h4> : ''}
         {/* 
         <button type='button' onClick={handleDownload}>
           Download Result
