@@ -9,10 +9,12 @@ export default function Main() {
   const [data, setData] = useState(null);
   const [uploaded, setUploaded] = useState(0);
   function handleTemplate(event) {
-    if (
-      !event.target.files &&
-      event.target.files[0].name.split('.').at(-1) !== 'docx'
-    ) {
+    if (!event.target.files) {
+      setFile(null);
+      return;
+    }
+    if (event.target.files[0].name.split('.').at(-1) !== 'docx') {
+      event.target.value = null;
       setFile(null);
       return;
     }
@@ -21,38 +23,34 @@ export default function Main() {
   }
 
   function handleExcel(event) {
-    if (
-      !event.target.files &&
-      event.target.files[0].name.split('.').at(-1) !== 'xlsx'
-    ) {
+    if (!event.target.files) {
+      setData(null);
+      return;
+    }
+    if (event.target.files[0].name.split('.').at(-1) !== 'xlsx') {
+      event.target.value = null;
       setData(null);
       return;
     }
     setData(event.target.files[0]);
-    setUploaded(file && data);
     if (file && data) setUploaded(1);
   }
 
   async function handleGenerate() {
-    if (
-      file.name.split('.').at(-1) === 'docx' &&
-      data.name.split('.').at(-1) === 'xlsx'
-    ) {
-      const formData = new FormData();
-      formData.append('file', file);
-      formData.append('data', data);
-      await axios
-        .post('https://simple-backend-ffmw.vercel.app/api/upload', formData)
-        .then((res) => {
-          fetch('https://simple-backend-ffmw.vercel.app/api/download').then(
-            (response) => {
-              response.blob().then((blob) => {
-                download(blob);
-              });
-            }
-          );
-        });
-    }
+    const formData = new FormData();
+    formData.append('file', file);
+    formData.append('data', data);
+    await axios
+      .post('https://simple-backend-ffmw.vercel.app/api/upload', formData)
+      .then((res) => {
+        fetch('https://simple-backend-ffmw.vercel.app/api/download').then(
+          (response) => {
+            response.blob().then((blob) => {
+              download(blob);
+            });
+          }
+        );
+      });
   }
   return (
     <main>
