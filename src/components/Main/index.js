@@ -12,28 +12,28 @@ export default function Main() {
     if (!event.target.files) {
       setFile(null);
       return;
-    }
-    if (event.target.files[0].name.split('.').at(-1) !== 'docx') {
+    } else if (event.target.files[0].name.split('.').at(-1) !== 'docx') {
       event.target.value = null;
       setFile(null);
       return;
+    } else {
+      setFile(event.target.files[0]);
+      setUploaded(file !== null && data !== null);
     }
-    setFile(event.target.files[0]);
-    if (file && data) setUploaded(1);
   }
 
   function handleExcel(event) {
     if (!event.target.files) {
       setData(null);
       return;
-    }
-    if (event.target.files[0].name.split('.').at(-1) !== 'xlsx') {
+    } else if (event.target.files[0].name.split('.').at(-1) !== 'xlsx') {
       event.target.value = null;
       setData(null);
       return;
+    } else {
+      setData(event.target.files[0]);
+      setUploaded(file !== null && data !== null);
     }
-    setData(event.target.files[0]);
-    if (file && data) setUploaded(1);
   }
 
   async function handleGenerate() {
